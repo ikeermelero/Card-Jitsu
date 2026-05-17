@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import router from './routes/router.js'
+import cors from 'cors'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import {checkDB,syncDB} from './config/db.js'
@@ -20,6 +21,10 @@ const io = new Server(server, {
     }
 })
 
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}))
 app.use(express.json())
 app.use(express.urlencoded()) 
 
@@ -41,7 +46,7 @@ io.on('connection', (socket) => {
 })
 
 checkDB();
-syncDB();
+//syncDB();
 
 server.listen(PORT, () => {
   console.log(`Servidor corriendo en http://${HOST}:${PORT}`)

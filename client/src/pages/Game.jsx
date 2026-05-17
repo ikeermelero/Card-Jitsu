@@ -7,6 +7,8 @@ export default function Game() {
   const { token, user } = useAuth()
   const navigate = useNavigate()
   const gameData = JSON.parse(sessionStorage.getItem('gameData') || '{}')
+  console.log('gameData:', gameData)
+  console.log('hand:', gameData.hand)
 
   const [hand, setHand] = useState(gameData.hand || [])
   const [wonCards, setWonCards] = useState([])

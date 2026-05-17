@@ -31,7 +31,9 @@ export function registerMatchmakingHandlers(io, socket) {
 
         socket1?.join(roomId)
         socket2?.join(roomId)
-
+        console.log('hand1:', hand1)
+        console.log('Emitiendo game:start a player1')
+       
         socket1?.emit('game:start', {
           roomId,
           hand: hand1,

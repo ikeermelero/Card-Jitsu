@@ -15,9 +15,9 @@ export default function Lobby() {
     socket.on('queue:waiting', () => setStatus('waiting'))
 
     socket.on('game:start', (data) => {
-      setStatus('found')
-      // Guardar datos de la partida y navegar
+      console.log('GAME START DATA:', data)
       sessionStorage.setItem('gameData', JSON.stringify(data))
+      console.log('SESSION:', sessionStorage.getItem('gameData'))
       navigate('/game')
     })
 
