@@ -4,6 +4,9 @@ import router from './routes/router.js'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import {checkDB,syncDB} from './config/db.js'
+import { socketAuthMiddleware } from './middlewares/socket.middleware.js'
+import { registerMatchmakingHandlers } from './socket/matchmaking.js'
+import { registerGameHandlers } from './socket/game.js'
 
 dotenv.config()
 const app = express()
@@ -23,6 +26,18 @@ app.use(express.urlencoded())
 app.use("/", router)
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' })
+})
+
+io.use(socketAuthMiddleware)
+
+io.on('connection', (socket) => {
+  console.log(`✓ Conectado: ${socket.user.username}`)
+  registerMatchmakingHandlers(io, socket)
+  registerGameHandlers(io, socket)
+
+  socket.on('disconnect', () => {
+    console.log(`✗ Desconectado: ${socket.user.username}`)
+  })
 })
 
 checkDB();
